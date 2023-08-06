@@ -2,6 +2,7 @@ package com.comsysto.trainings.springtrainingeon.app.locallauncher.mocks;
 
 import com.comsysto.trainings.springtrainingeon.app.adapter.web.out.chargingpointstate.RestChargingPointStateClient;
 import com.comsysto.trainings.springtrainingeon.app.domain.charging.ChargingPointState;
+import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -20,33 +21,24 @@ import java.util.Random;
 @RequestMapping("mocks/charging-point-state")
 @Slf4j
 public class ChargingPointStateMockController {
-    private String expectedAuthentication = "Basic " + HttpHeaders.encodeBasicAuth("hans", "peter", StandardCharsets.UTF_8);
-    private List<ChargingPointState> chargingPointStates = List.of(ChargingPointState.values());
+    private final List<ChargingPointState> chargingPointStates = List.of(ChargingPointState.values());
     private final Random random = new Random();
 
     @GetMapping("{chargingStationId}/{chargingPointName}")
     public ResponseEntity<?> getState(
             @PathVariable String chargingStationId,
-            @PathVariable String chargingPointName,
-            @RequestHeader(name = "X-Request-Id", required = false) String requestId,
-            @RequestHeader(name = HttpHeaders.AUTHORIZATION, required = false) String authentication
+            @PathVariable String chargingPointName
     ) {
 
 
-        if (!expectedAuthentication.equals(authentication) && !authentication.startsWith("Bearer ")) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        }
 
         log.warn(
-                "MOCK CALL Charging Point State: {}/{}, requestId {}, authentication {}",
+                "MOCK CALL Charging Point State: {}/{}",
                 chargingStationId,
-                chargingPointName,
-                requestId,
-                authentication
+                chargingPointName
         );
 
         var state = chargingPointStates.get(random.nextInt(chargingPointStates.size()));
-        return ResponseEntity.ok(new RestChargingPointStateClient.ChargingPointStateResponse(state.name()));
-//        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        return ResponseEntity.ok(Map.of("state", state.name()));
     }
 }

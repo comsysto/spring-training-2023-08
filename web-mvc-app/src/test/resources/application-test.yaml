@@ -1,8 +1,0 @@
-rest-client:
-  target-systems:
-    CHARGING_POINT_STATE_SYSTEM:
-      baseUri: "http://localhost:${wiremock.server.port}/mocks/charging-point-state"
-      #      forwardToken: true
-      basicAuth:
-        user: "hans"
-        password: "peter"

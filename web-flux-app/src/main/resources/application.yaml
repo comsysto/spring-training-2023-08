@@ -1,6 +1,0 @@
-spring:
-  cache:
-    redis:
-      time-to-live: 600000
-    type: redis
-
