@@ -1,5 +1,5 @@
 ### getToken
-POST http://localhost:8081/realms/spring-realm/protocol/openid-connect/token
+POST http://ralfn.de:9091/realms/spring-realm/protocol/openid-connect/token
 Content-Type: application/x-www-form-urlencoded
 
 grant_type=password&username=maccody&password=password&client_id=spring
@@ -43,3 +43,9 @@ Authorization: Bearer {{ auth_token }}
     }
   }
 }
+
+### getUser
+GET http://localhost:8080/user
+Content-Type: application/json
+X-Request-ID: client-{{$uuid}}
+Authorization: Bearer {{ auth_token }}

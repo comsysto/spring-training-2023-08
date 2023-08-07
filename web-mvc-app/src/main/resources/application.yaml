@@ -3,7 +3,7 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: http://localhost:8081/realms/spring-realm
+          issuer-uri: http://ralfn.de:9091/realms/spring-realm
       client:
         registration:
           keycloak:
@@ -12,4 +12,4 @@ spring:
             scope: openid
         provider:
           keycloak:
-            issuer-uri: http://localhost:8081/realms/spring-realm
+            issuer-uri: http://ralfn.de:9091/realms/spring-realm
