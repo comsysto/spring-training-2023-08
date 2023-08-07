@@ -11,7 +11,6 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 @EnableCaching
 public class MvcSpringTrainingEonApplication {
 
-    // test
     public static void main(String[] args) {
         SpringApplication.run(MvcSpringTrainingEonApplication.class, args);
     }
