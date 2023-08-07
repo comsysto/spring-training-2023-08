@@ -1,14 +1,27 @@
+### getToken
+POST http://localhost:8081/realms/spring-realm/protocol/openid-connect/token
+Content-Type: application/x-www-form-urlencoded
 
+grant_type=password&username=maccody&password=password&client_id=spring
+
+> {%
+    let accessToken = response.body.access_token;
+    client.log("accessToken: " + accessToken);
+    client.global.set("auth_token", accessToken);
+
+%}
 
 ### get all
 GET http://localhost:8080/charging-stations
 Accept: application/json
 X-Request-ID: client-{{$uuid}}
+Authorization: Bearer {{ auth_token }}
 
 ### post new
 POST http://localhost:8080/charging-stations
 Content-Type: application/json
 X-Request-ID: client-{{$uuid}}
+Authorization: Bearer {{ auth_token }}
 
 {
   "location": {
