@@ -22,10 +22,14 @@ public class SecurityConfig
 				r.jwt(j ->
 				{
 					var authenticationConverter = new JwtAuthenticationConverter();
+
 					var grantedAuthoritiesConverter = new JwtGrantedAuthoritiesConverter();
 					grantedAuthoritiesConverter.setAuthorityPrefix("");
 					grantedAuthoritiesConverter.setAuthoritiesClaimName("roles");
-					authenticationConverter.setJwtGrantedAuthoritiesConverter(grantedAuthoritiesConverter);
+
+					RoleAuthorityConverter roleMapper = new RoleAuthorityConverter();
+
+					authenticationConverter.setJwtGrantedAuthoritiesConverter(grantedAuthoritiesConverter.andThen(roleMapper));
 					j.jwtAuthenticationConverter(authenticationConverter);
 				});
 			});
