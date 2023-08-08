@@ -8,23 +8,28 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtGra
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
-public class SecurityConfig {
+public class SecurityConfig
+{
 
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
-                .oauth2ResourceServer(r -> {
-                    r.jwt( j -> {
-                        var authenticationConverter = new JwtAuthenticationConverter();
-                        var grantedAuthoritiesConverter = new JwtGrantedAuthoritiesConverter();
-                        grantedAuthoritiesConverter.setAuthorityPrefix("");
-                        grantedAuthoritiesConverter.setAuthoritiesClaimName("roles");
-                        authenticationConverter.setJwtGrantedAuthoritiesConverter(grantedAuthoritiesConverter);
-                        j.jwtAuthenticationConverter(authenticationConverter);
-                    });
-                });
+	@Bean
+	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception
+	{
+		http.authorizeHttpRequests(r -> r.requestMatchers("/user").hasAuthority("spring_a"))
+		    .authorizeHttpRequests(r -> r.requestMatchers("/test").hasAuthority("spring_b"))
+			.oauth2ResourceServer(r ->
+			{
+				r.jwt(j ->
+				{
+					var authenticationConverter = new JwtAuthenticationConverter();
+					var grantedAuthoritiesConverter = new JwtGrantedAuthoritiesConverter();
+					grantedAuthoritiesConverter.setAuthorityPrefix("");
+					grantedAuthoritiesConverter.setAuthoritiesClaimName("roles");
+					authenticationConverter.setJwtGrantedAuthoritiesConverter(grantedAuthoritiesConverter);
+					j.jwtAuthenticationConverter(authenticationConverter);
+				});
+			});
 
-        return http.build();
-    }
+		return http.build();
+	}
 
 }
