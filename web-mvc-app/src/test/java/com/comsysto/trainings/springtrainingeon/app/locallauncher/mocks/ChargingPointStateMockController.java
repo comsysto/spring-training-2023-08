@@ -27,11 +27,10 @@ public class ChargingPointStateMockController {
     @GetMapping("{chargingStationId}/{chargingPointName}")
     public ResponseEntity<?> getState(
             @PathVariable String chargingStationId,
-            @PathVariable String chargingPointName
+            @PathVariable String chargingPointName,
+            @RequestHeader(value = HttpHeaders.AUTHORIZATION, required = false) String bearerToken,
+            @RequestHeader(value = "requestId", required = false) String requestId
     ) {
-
-
-
         log.warn(
                 "MOCK CALL Charging Point State: {}/{}",
                 chargingStationId,
