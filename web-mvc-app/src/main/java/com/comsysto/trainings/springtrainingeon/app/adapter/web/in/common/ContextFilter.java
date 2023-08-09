@@ -2,35 +2,40 @@ package com.comsysto.trainings.springtrainingeon.app.adapter.web.in.common;
 
 import java.io.IOException;
 
-import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+
+import com.comsysto.trainings.springtrainingeon.app.port.context.out.BearerToken;
+import com.comsysto.trainings.springtrainingeon.app.port.context.out.Context;
+import com.comsysto.trainings.springtrainingeon.app.port.context.out.ContextRepository;
+import com.comsysto.trainings.springtrainingeon.app.port.context.out.RequestId;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-//@Component
+@Component
+@RequiredArgsConstructor
 public class ContextFilter extends OncePerRequestFilter
 {
+	private final ContextRepository contextRepository;
 
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 		throws ServletException, IOException
 	{
 		String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
+		String requestId = request.getHeader("requestId");
+
+		Context context = new Context(new RequestId(requestId), new BearerToken(authHeader));
+		contextRepository.setContext(context);
 
 		log.info("auth token: {}", authHeader);
-		response.setContentType("text/plain");
-		response.setStatus(HttpStatus.UNAUTHORIZED.value());
-		response.getWriter().println("Booom");
-		response.getWriter().flush();
-//		filterChain.doFilter(request, response);
+		filterChain.doFilter(request, response);
 	}
 }
