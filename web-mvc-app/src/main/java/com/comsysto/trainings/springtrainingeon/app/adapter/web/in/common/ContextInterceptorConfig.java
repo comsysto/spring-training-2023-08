@@ -11,7 +11,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 
 @Slf4j
-@Configuration
+//@Configuration
 public class ContextInterceptorConfig implements WebMvcConfigurer {
 
     @Autowired
