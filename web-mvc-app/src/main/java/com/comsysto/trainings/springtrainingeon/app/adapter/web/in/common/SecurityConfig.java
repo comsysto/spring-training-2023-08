@@ -1,5 +1,8 @@
 package com.comsysto.trainings.springtrainingeon.app.adapter.web.in.common;
 
+import com.comsysto.trainings.springtrainingeon.app.port.security.out.WebClientQualifier;
+import com.comsysto.trainings.springtrainingeon.app.port.security.out.WebClientQualifier.Type;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -14,6 +17,7 @@ public class SecurityConfig
 {
 
 	@Bean
+	@WebClientQualifier(Type.A)
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception
 	{
 		http
